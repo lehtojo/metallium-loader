@@ -1,0 +1,16 @@
+[package]
+name = "kernel-loader"
+version = "0.1.0"
+authors = ["Joonas Lehto <joonas.eemil.lehto@gmail.com"]
+edition = "2021"
+build = "build.rs"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+uefi = { version = "0.31.0", features = ["alloc", "global_allocator"] }
+elfloader = "0.16.0"
