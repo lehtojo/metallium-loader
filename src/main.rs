@@ -54,7 +54,8 @@ pub struct Regions {
 pub struct BootInfo {
     pub regions: Regions,
     pub kernel_regions: Regions,
-    pub graphics: GraphicsInfo
+    pub graphics: GraphicsInfo,
+    pub rsdp_physical_address: u64
 }
 
 impl Regions {
@@ -75,7 +76,8 @@ impl BootInfo {
         BootInfo {
             regions: Regions::empty(),
             kernel_regions: Regions::empty(),
-            graphics: GraphicsInfo::new()
+            graphics: GraphicsInfo::new(),
+            rsdp_physical_address: 0
         }
     }
 }
@@ -254,6 +256,7 @@ unsafe fn main(
     writeln!(stdout, "Loading memory information...").unwrap();
     let mut info = BootInfo::new();
     info.regions = load_regions(&system_table);
+    info.rsdp_physical_address = rsdp_address as u64;
 
     writeln!(stdout, "Loading kernel into memory...").unwrap();
     let entry = load_kernel(system_table.unsafe_clone(), &mut info);
